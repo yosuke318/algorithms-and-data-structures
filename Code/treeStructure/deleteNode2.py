@@ -4,38 +4,69 @@ class BinaryTree:
         self.left = left
         self.right = right
 
-def bstDelete(root,key):
-    if root == None: 
-        return None
-    node = search(root,key)
-    if keyExist(root, key) == False:
-        return root
+def bstDelete(root, key):
+    if root == None: return None
+    node = search(root, key)
+    if node == None: return root
 
     parent = findParent(root, node)
 
     if node.left == None and node.right == None:
+        if parent == None: return None  # rootを削除
         if parent.left is not None and parent.left.data == key:
             parent.left = None
         elif parent.right is not None and parent.right.data == key:
             parent.right = None
 
-    if node.left == None:
-        transplant(root,parent, node, node.right)
+    elif node.left == None:  # ← elif に変更
+        root = transplant(root, parent, node, node.right)
 
     elif node.right == None:
-        transplant(root,parent, node, node.left)
+        root = transplant(root, parent, node, node.left)
 
     else:
-        successor = findSuccessor(node)
-        successorP = findParent(root,successor)
+        successor = findSuccessor(root, node)
+        successorP = findParent(root, successor)
 
         if successor != node.right:
-            transplant(root,successorP, successor, successor.right)
+            root = transplant(root, successorP, successor, successor.right)
             successor.right = node.right
 
-        transplant(root,parent, node, successor)
-
+        root = transplant(root, parent, node, successor)
         successor.left = node.left
+
+    return root  # ← rootを返す
+
+
+def transplant(root, nodeParent, node, target):
+    if nodeParent == None:
+        root = target  # rootを更新して返す
+    elif nodeParent.left == node:
+        nodeParent.left = target
+    else:
+        nodeParent.right = target
+    return root  # ← rootを返す
+
+
+def findSuccessor(root, node):
+    targetNode = node
+    if targetNode == None: return None
+    if targetNode.right != None: return minimumNode(targetNode.right)
+
+    successor = None
+    iterator = root
+
+    while iterator != None:
+        if targetNode.data == iterator.data:
+            return successor
+        if targetNode.data < iterator.data and (successor == None or iterator.data < successor.data):
+            successor = iterator  # ← iterator.left ではなく iterator
+        if targetNode.data < iterator.data:
+            iterator = iterator.left
+        else:
+            iterator = iterator.right
+
+    return successor
 
 
 
@@ -70,41 +101,6 @@ def transplant(root, nodeParent, node, target):
         nodeParent.left = target
     else:
         nodeParent.right = target
-
-
-def findParent(root, node):
-    iterator = root
-
-    parent = None
-
-    while iterator != node:
-        parent = iterator
-        iterator = iterator.left if iterator.data > node.data else iterator.right
-    return parent
-
-
-def findSuccessor(root, node):
-
-    targetNode = node
-    if targetNode == None: return None
-
-    if targetNode.right != None: return minimumNode(targetNode.right)
-
-    successor = None
-    iterator = root
-
-    while iterator != None:
-        if targetNode.data == iterator.data:
-            return successor
-        if targetNode.data < iterator.data and (successor == None or iterator.data < successor.data):
-            successor = iterator.left
-
-        if targetNode.data < iterator.data:
-            iterator = iterator.left
-        else:
-            iterator = iterator.right
-
-    return successor
 
 
 def minimumNode(node):
