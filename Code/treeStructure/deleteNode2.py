@@ -37,6 +37,13 @@ def bstDelete(root, key):
 
     return root  # ← rootを返す
 
+def findParent(root, node):
+    iterator = root
+    parent = None
+    while iterator != node:
+        parent = iterator
+        iterator = iterator.left if iterator.data > node.data else iterator.right
+    return parent
 
 def transplant(root, nodeParent, node, target):
     if nodeParent == None:
@@ -93,15 +100,6 @@ def keyExist(root, key):
             iterator = iterator.right
 
     return False
-
-def transplant(root, nodeParent, node, target):
-    if nodeParent == None: 
-        root = target
-    elif nodeParent.left == node: 
-        nodeParent.left = target
-    else:
-        nodeParent.right = target
-
 
 def minimumNode(node):
 
