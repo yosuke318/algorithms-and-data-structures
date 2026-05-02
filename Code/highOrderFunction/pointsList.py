@@ -1,2 +1,6 @@
 def calcDistanceList(pointsList):
-    return map(lambda n: abs(int(n.split("-")[0]) - int(n.split("-")[1])), pointsList)
+    def calcDistance(n):
+        a, b = n.split("-")
+        return abs(int(a) - int(b))
+    
+    return map(calcDistance, pointsList)
