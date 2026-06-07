@@ -115,7 +115,7 @@ class Field{
         this.creatures = new ArrayList<Monster>();
     }
 
-    // 既存のモンスターをランダムな位置に追加
+    // 既存のモンスターをランダムな位置に追加(呼び出し側が、Monsterを生成し注入しているためこれはDI)
     public void randomlyAddWithDependency(Monster monster){
         Coordinates c = new Coordinates(
             this.internalRanAlgorithm(1, this.MAX_X),
