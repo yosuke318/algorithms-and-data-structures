@@ -1,5 +1,9 @@
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 class BMI{
     private double heightM;   // 身長（メートル単位）
@@ -224,6 +228,307 @@ class Dog extends Mammal{
 
 }
 
+class Cattle extends Mammal{
+    private boolean hasHorns;              // 角の有無
+    private double milkProductionLiters;   // 1日あたりの乳量（リットル）
+
+    public Cattle(String species, double heightM, double weightKg, double lifeSpanDays, String biologicalSex, double furLengthCm, String furType, double avgBodyTemperatureC, boolean hasHorns, double milkProductionLiters){
+        super("Cattle", heightM, weightKg, lifeSpanDays, biologicalSex, furLengthCm, furType, avgBodyTemperatureC);
+        this.hasHorns = hasHorns;
+        this.milkProductionLiters = milkProductionLiters;
+    }
+
+    // 草を食べる
+    public void graze(){
+        if(!this.isAlive()) return;
+        System.out.println("Cattle is grazing...");
+        this.eat();
+    }
+
+    // 角で突く
+    public void charge(){
+        if(!this.isAlive()) return;
+        if(this.hasHorns){
+            System.out.println("Cattle charges with its horns!");
+        } else {
+            System.out.println("Cattle has no horns to charge with.");
+        }
+    }
+
+    public boolean hasHorns(){
+        return this.hasHorns;
+    }
+
+    public double getMilkProductionLiters(){
+        return this.milkProductionLiters;
+    }
+
+    @Override
+    public String toString(){
+        return super.toString() + " hasHorns:" + this.hasHorns + "/milkProduction:" + this.milkProductionLiters + "L/day";
+    }
+}
+
+class Horse extends Mammal{
+    private String coatColor;       // 毛色（例："bay", "black", "white"）
+    private boolean isWild;         // 野生かどうか
+    private double runningSpeedKmh;  // 走行速度（km/h）
+
+    public Horse(String species, double heightM, double weightKg, double lifeSpanDays, String biologicalSex, double furLengthCm, String furType, double avgBodyTemperatureC, String coatColor, boolean isWild, double runningSpeedKmh){
+        super("Horse", heightM, weightKg, lifeSpanDays, biologicalSex, furLengthCm, furType, avgBodyTemperatureC);
+        this.coatColor = coatColor;
+        this.isWild = isWild;
+        this.runningSpeedKmh = runningSpeedKmh;
+    }
+
+    public double getRunningSpeedKmh(){
+        return this.runningSpeedKmh;
+    }
+
+    // 逃げるメソッド
+    public void runAway(){
+        if(!this.isAlive()) return;
+        if(this.isWild){
+            System.out.println("The wild horse runs away at full speed!");
+        } else {
+            System.out.println("The horse resists and tries to run away!");
+        }
+        this.move();
+    }
+
+    public String getCoatColor(){
+        return this.coatColor;
+    }
+
+    public boolean isWild(){
+        return this.isWild;
+    }
+
+    @Override
+    public String toString(){
+        return super.toString() + " coatColor:" + this.coatColor + "/isWild:" + this.isWild;
+    }
+}
+
+// ...existing code...
+
+class Bird extends Animal{
+    private double wingSpanCm;      // 翼開長（センチメートル単位）
+    private boolean canFly;         // 飛べるかどうか（ペンギンなどはfalse）
+    private String featherType;     // 羽毛の種類（例："down", "contour"）
+    private String beakType;        // くちばしの種類（例："hooked", "flat", "pointed"）
+    private boolean isMigratory;    // 渡り鳥かどうか
+
+    public Bird(String species, double heightM, double weightKg, double lifeSpanDays, String biologicalSex, double wingSpanCm, boolean canFly, String featherType, String beakType, boolean isMigratory){
+        super(species, heightM, weightKg, lifeSpanDays, biologicalSex);
+        this.wingSpanCm = wingSpanCm;
+        this.canFly = canFly;
+        this.featherType = featherType;
+        this.beakType = beakType;
+        this.isMigratory = isMigratory;
+    }
+
+    // 飛ぶ
+    public void fly(){
+        if(!this.isAlive()) return;
+        if(this.canFly){
+            System.out.println(this.species + " is flying with its " + this.wingSpanCm + "cm wingspan!");
+        } else {
+            System.out.println(this.species + " cannot fly.");
+        }
+        System.out.println();
+    }
+
+    // 鳴く
+    public void chirp(){
+        if(!this.isAlive()) return;
+        System.out.println(this.species + " is chirping!");
+        System.out.println();
+    }
+
+    // 渡りをする
+    public void migrate(){
+        if(!this.isAlive()) return;
+        if(this.isMigratory){
+            System.out.println(this.species + " is migrating to a warmer region.");
+        } else {
+            System.out.println(this.species + " does not migrate.");
+        }
+        System.out.println();
+    }
+
+    public double getWingSpanCm(){
+        return this.wingSpanCm;
+    }
+
+    public boolean canFly(){
+        return this.canFly;
+    }
+
+    public boolean isMigratory(){
+        return this.isMigratory;
+    }
+
+    @Override
+    public void move(){
+        if(!this.isAlive()) return;
+        System.out.println(this.species + (this.canFly ? " is flying through the sky!" : " is walking on the ground."));
+        System.out.println();
+    }
+
+    @Override
+    public String toString(){
+        return super.toString() + " wingSpan:" + this.wingSpanCm + "cm/canFly:" + this.canFly + "/feather:" + this.featherType + "/beak:" + this.beakType + "/migratory:" + this.isMigratory;
+    }
+}
+
+class Chicken extends Bird{
+    private boolean isFreeRange;        // 放し飼いかどうか
+    private double eggProductionPerDay; // 1日あたりの産卵数
+
+    public Chicken(String species, double heightM, double weightKg, double lifeSpanDays, String biologicalSex, double wingSpanCm, String featherType, boolean isFreeRange, double eggProductionPerDay){
+        super(species, heightM, weightKg, lifeSpanDays, biologicalSex, wingSpanCm, false, featherType, "pointed", false);
+        // ニワトリは飛べない(canFly=false)、渡り鳥でない(isMigratory=false)、くちばしは"pointed"で固定
+        this.isFreeRange = isFreeRange;
+        this.eggProductionPerDay = eggProductionPerDay;
+    }
+
+    // 卵を産む
+    public void layEgg(){
+        if(!this.isAlive()) return;
+        if(this.biologicalSex.equals("female")){
+            System.out.println(this.species + " laid an egg! (daily production: " + this.eggProductionPerDay + ")");
+        } else {
+            System.out.println("Male chicken cannot lay eggs.");
+        }
+        System.out.println();
+    }
+
+    // 鳴く（コケコッコー）
+    @Override
+    public void chirp(){
+        if(!this.isAlive()) return;
+        System.out.println(this.species + " says: Cock-a-doodle-doo!");
+        System.out.println();
+    }
+
+    public boolean isFreeRange(){
+        return this.isFreeRange;
+    }
+
+    public double getEggProductionPerDay(){
+        return this.eggProductionPerDay;
+    }
+
+    @Override
+    public String toString(){
+        return super.toString() + " isFreeRange:" + this.isFreeRange + "/eggProduction:" + this.eggProductionPerDay + "/day";
+    }
+}
+
+
+class Person extends Mammal{
+    private Map<String, List<Animal>> listOfAnimalMap = new HashMap<>(Map.of(
+        "Cattle", new ArrayList<>(),
+        "Chicken", new ArrayList<>(),
+        "Horse", new ArrayList<>()
+    ));
+    private Integer earning;
+    
+    public Person(String species, double heightM, double weightKg, double lifeSpanDays, String biologicalSex, Integer earning){
+        super(species, heightM, weightKg, lifeSpanDays, biologicalSex, 0, "none", 36.6);
+        this.earning = earning;
+    }
+
+    public void haveAnimal(String species, Integer count){
+        listOfAnimalMap.putIfAbsent(species, new ArrayList<>());
+
+        for(int i = 0; i < count; i++){
+            Animal animal;
+            switch(species){
+                case "Cattle":
+                    animal = new Cattle("Cattle", 1.8, 454.5, 3650, "female", 1.4, "Cowhide", 38.5, false, 25.0);
+                    break;
+                case "Chicken":
+                    animal = new Chicken("Chicken", 0.3, 2.5, 1825, "female", 20.0, "contour", true, 0.8);
+                    break;
+                case "Horse":
+                    animal = new Horse("Horse", 1.6, 500.0, 10950, "female", 2.0, "Horsehair", 37.5, "bay", false);
+                    break;
+                default:
+                    animal = new Animal(species, 1.0, 10.0, 365, "female");
+                    break;
+            }
+
+            listOfAnimalMap.get(species).add(animal);
+        }
+    }
+
+    public void sellAnimal(String species, Integer count){
+        List<Animal> animals = listOfAnimalMap.get(species);
+
+        if(animals == null || animals.size() == 0){
+            return;
+        }
+
+        if(count > animals.size()){
+            return ;
+        }
+
+        int totalEarning = 0;
+
+        for(int i = 0; i < count; i++){
+            Animal animal = animals.get(i);
+            switch(species){
+                case "Cattle":
+                    totalEarning += (int)(animal.bmi.getWeightKg() * 500);
+                    break;
+                case "Chicken":
+                    totalEarning += (int)(animal.bmi.getWeightKg() * 300);
+                    break;
+                case "Horse":
+                    if(animal instanceof Horse){
+                        totalEarning += (int)(((Horse) animal).getRunningSpeedKmh() * 10000);
+                    }
+                    break;
+            }
+        }
+
+        animals.subList(0, count).clear();
+        setEarning(totalEarning);
+        System.out.println("Sold " + count + " " + species + " for " + totalEarning + " yen.");
+        System.out.println("Remaining " + species + ": " + animals.size() + " / Total earning: " + this.earning);
+        System.out.println();
+    }
+
+    public void sellAnimal(String species){
+        // 全頭売る
+        List<Animal> animals = listOfAnimalMap.get(species);
+        if(animals == null || animals.size() == 0){
+            System.out.println("No " + species + " to sell.");
+            return;
+        }
+        sellAnimal(species, animals.size());
+    }
+
+    public void setEarning(Integer money){
+        this.earning += money;
+    }
+
+    public void buyMilk(){
+        if(listOfAnimalMap.get("Cattle").size() != 0){
+            setEarning(1);
+        }
+    }
+
+    public void buyEgg(){
+        if(listOfAnimalMap.get("Chicken").size() == 0) return;
+
+        setEarning(1);
+    }
+
+}
+
 class Main{
     public static void main(String[] args){
         Mammal cow = new Mammal("Cattle", 1.8,454.5,730, "female", 1.4, "Cowhide", 32.4);
@@ -252,7 +557,20 @@ class Main{
 
         System.out.println(shihTzu.getBreed());
         System.out.println(shihTzu.isPet());
-        System.out.println(shihTzu.ownPet());
+        shihTzu.ownPet();
         System.out.println(shihTzu.isPet());
+
+        Person farmer = new Person("Human", 1.7, 65.0, 29200, "male", 500000);
+
+        farmer.haveAnimal("Cattle", 3);   // 牛を3頭追加
+        farmer.haveAnimal("Chicken", 5);  // ニワトリを5羽追加
+        farmer.haveAnimal("Horse", 2);    // 馬を2頭追加
+        farmer.buyMilk();
+        farmer.buyEgg();
+
+        farmer.haveAnimal("Cattle", 3);
+        farmer.sellAnimal("Cattle", 5);  // → Not enough Cattle to sell. (have: 3, requested: 5)
+        farmer.sellAnimal("Cattle", 2);  // → Sold 2 Cattle for *** yen. Remaining Cattle: 1
+        farmer.sellAnimal("Cattle");     // → Sold 1 Cattle for *** yen. Remaining Cattle: 0
     }
 }
