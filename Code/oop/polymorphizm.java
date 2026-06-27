@@ -304,6 +304,7 @@ class Main{
     public static void animalPolymorphism(Animal animal){
         System.out.println(animal);
         animal.eat();
+        animal.sleep(); 
 
         // ここでも動的バインディングが行われますが、さらに「instanceof」演算子が使われています。
         // これは、animalオブジェクトがFoxクラスのインスタンスであるかどうかを確認します。Foxクラスのインスタンスであれば、howlメソッドを呼び出します。
@@ -341,8 +342,5 @@ class Main{
         System.out.println(world);
 
         // sleep()関数を異なるクラスに上書きして動的バインディングを調べ、その関数をanimalPolymorphism内で呼び出してください。
-        f1.sleep();
-        bird1.sleep();
-        bunny1.sleep();
     }
 }
