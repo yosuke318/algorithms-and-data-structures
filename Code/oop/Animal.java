@@ -115,7 +115,7 @@ class Mammal extends Animal{
         super(species, heightM, weightKg, lifeSpanDays, biologicalSex);
         this.furLengthCm = furLengthCm;
         this.furType = furType;
-        this.mammaryGland = (biologicalSex == "female");
+        this.mammaryGland = "female".equals(biologicalSex);
         this.avgBodyTemperatureC = avgBodyTemperatureC;
         this.bodyTemperatureC = this.avgBodyTemperatureC;
     }
@@ -137,9 +137,10 @@ class Mammal extends Animal{
 
     public void mate(Mammal mammal){
         if(!this.isAlive()) return;
-        if(this.species != mammal.species) return;
-        if(this.biologicalSex == "female" && mammal.biologicalSex == "male") this.fertalize();
-        else if(this.biologicalSex == "male" && mammal.biologicalSex == "female") mammal.fertalize();
+        if(mammal == null || !mammal.isAlive()) return;
+        if(this.species == null || !this.species.equals(mammal.species)) return;
+        if("female".equals(this.biologicalSex) && "male".equals(mammal.biologicalSex)) this.fertalize();
+        else if("male".equals(this.biologicalSex) && "female".equals(mammal.biologicalSex)) mammal.fertalize();
     }
 
     public void fertalize(){
@@ -233,7 +234,7 @@ class Cattle extends Mammal{
     private double milkProductionLiters;   // 1日あたりの乳量（リットル）
 
     public Cattle(String species, double heightM, double weightKg, double lifeSpanDays, String biologicalSex, double furLengthCm, String furType, double avgBodyTemperatureC, boolean hasHorns, double milkProductionLiters){
-        super("Cattle", heightM, weightKg, lifeSpanDays, biologicalSex, furLengthCm, furType, avgBodyTemperatureC);
+        super(species, heightM, weightKg, lifeSpanDays, biologicalSex, furLengthCm, furType, avgBodyTemperatureC);
         this.hasHorns = hasHorns;
         this.milkProductionLiters = milkProductionLiters;
     }
@@ -275,7 +276,7 @@ class Horse extends Mammal{
     private double runningSpeedKmh;  // 走行速度（km/h）
 
     public Horse(String species, double heightM, double weightKg, double lifeSpanDays, String biologicalSex, double furLengthCm, String furType, double avgBodyTemperatureC, String coatColor, boolean isWild, double runningSpeedKmh){
-        super("Horse", heightM, weightKg, lifeSpanDays, biologicalSex, furLengthCm, furType, avgBodyTemperatureC);
+        super(species, heightM, weightKg, lifeSpanDays, biologicalSex, furLengthCm, furType, avgBodyTemperatureC);
         this.coatColor = coatColor;
         this.isWild = isWild;
         this.runningSpeedKmh = runningSpeedKmh;
@@ -453,7 +454,7 @@ class Person extends Mammal{
                     animal = new Chicken("Chicken", 0.3, 2.5, 1825, "female", 20.0, "contour", true, 0.8);
                     break;
                 case "Horse":
-                    animal = new Horse("Horse", 1.6, 500.0, 10950, "female", 2.0, "Horsehair", 37.5, "bay", false);
+                    animal = new Horse("Horse", 1.6, 500.0, 10950, "female", 2.0, "Horsehair", 37.5, "bay", false, 45.0);
                     break;
                 default:
                     animal = new Animal(species, 1.0, 10.0, 365, "female");
@@ -468,11 +469,15 @@ class Person extends Mammal{
         List<Animal> animals = listOfAnimalMap.get(species);
 
         if(animals == null || animals.size() == 0){
+            System.out.println("No " + species + " to sell.");
+            System.out.println();
             return;
         }
 
         if(count > animals.size()){
-            return ;
+            System.out.println("Not enough " + species + " to sell. (have: " + animals.size() + ", requested: " + count + ")");
+            System.out.println();
+            return;
         }
 
         int totalEarning = 0;

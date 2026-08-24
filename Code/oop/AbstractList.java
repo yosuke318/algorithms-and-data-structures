@@ -34,7 +34,9 @@ abstract class AbstractListInteger{
 // 異なる入力タイプを可能にするために、これらのクラスに必要なだけ状態や挙動、
 // オーバーロードされた関数を追加することができます。
 
-class IntegerArrayList extends AbstractListInteger{
+// TODO: 残りの抽象メソッド（get / pop / addAt / removeAt / removeAllAt / subList）を実装したら
+//       abstract を外して具象クラスにする。
+abstract class IntegerArrayList extends AbstractListInteger{
 
     public IntegerArrayList(){
         super();
@@ -44,7 +46,7 @@ class IntegerArrayList extends AbstractListInteger{
         super(arr);
     }
 
-    @override
+    @Override
     public void add(int element){
         int[] newList = new int[initialList.length + 1];
         System.arraycopy(initialList, 0, newList, 0, initialList.length);
@@ -53,7 +55,7 @@ class IntegerArrayList extends AbstractListInteger{
         this.initialList = newList;
     }
 
-    @override
+    @Override
     public void add(int[] elements){
         int[] newList = new int[initialList.length + elements.length];
         System.arraycopy(initialList, 0, newList, 0, initialList.length);

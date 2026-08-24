@@ -160,7 +160,7 @@ class Mammal extends Animal{
         this.furLengthCm = furLengthCm;
         this.furType = furType;
 
-        this.mammaryGland = (biologicalSex == "female");
+        this.mammaryGland = "female".equals(biologicalSex);
 
         this.avgBodyTemperatureC = avgBodyTemperatureC;
         this.bodyTemperatureC = this.avgBodyTemperatureC;
@@ -183,9 +183,10 @@ class Mammal extends Animal{
 
     public void mate(Mammal mammal){
         if(!this.isAlive()) return;
-        if(this.species != mammal.species) return;
-        if(this.biologicalSex == "female" && mammal.biologicalSex == "male") this.fertalize();
-        else if(this.biologicalSex == "male" && mammal.biologicalSex == "female") mammal.fertalize();
+        if(mammal == null || !mammal.isAlive()) return;
+        if(this.species == null || !this.species.equals(mammal.species)) return;
+        if("female".equals(this.biologicalSex) && "male".equals(mammal.biologicalSex)) this.fertalize();
+        else if("male".equals(this.biologicalSex) && "female".equals(mammal.biologicalSex)) mammal.fertalize();
     }
 
     public void fertalize(){

@@ -58,7 +58,7 @@ class AirPlane implements Fly {
 
 class PaperAirPlane implements Fly {
     private double flySpeed = 6.5;
-    private double FlightHeight = 3.0;
+    private double flightHeight = 3.0;
 
     @Override
     public void fly() {
