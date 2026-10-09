@@ -5,5 +5,8 @@ public class Main {
 
         fairyWorld.rentPet(new PlayfulCatAssistant(), jessica);
         fairyWorld.rentPet(new PlayfulDogAssistant(), jessica);
+
+        fairyWorld.rentPet(new PlayfulRabbitAssistant(),
+        jessica);
     }
 }
