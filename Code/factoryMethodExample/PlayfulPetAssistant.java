@@ -47,30 +47,39 @@ abstract class PlayfulPetAssistant {
     }
 
     public double runAssistanceTour(Person person) {
-        return this.runAssistanceTour(person, this.DEFAULT_TOUR);
+        return this.runAssistanceTour(person, this.DEFAULT_TOUR, 1);
     }
 
     public double runAssistanceTour(Person person, String tour) {
+        return this.runAssistanceTour(person, tour, 1);
+    }
+
+    public double runAssistanceTour(Person person, String tour, int petCount) {
         if (!this.isValidTour(tour)) {
             System.out.println("The tour guide does not accept the " + tour + " tour.");
         }
 
-        PlayfulPet playfulPet = this.createPlayfulPet();
+        PlayfulPet[] pets = this.createPlayfulPets(petCount);
 
         System.out.println("");
         System.out.println("Booting up... Playful Pet Assistance robot at your service.");
         System.out.println("Printing information about the Person to service..." + person);
         System.out.println("");
-        System.out.println("Printing information about the Playful Pet - " + playfulPet.getPetName() + " to service..." + playfulPet);
 
-        if ("all-rounder pack".equals(tour) || "deluxe rounder pack".equals(tour)) {
-            int count = "all-rounder pack".equals(tour) ? 1 : 3;
-            this.genericRounderTour(count, person, playfulPet);
-        } else {
-            System.out.println("The tour assistant robot for " + playfulPet.getPetName() + " and " + person.getName() + " did nothing.");
+        double rentalCosts = 0.0;
+        for (PlayfulPet playfulPet : pets) {
+            System.out.println("Printing information about the Playful Pet - " + playfulPet.getPetName() + " to service..." + playfulPet);
+
+            if ("all-rounder pack".equals(tour) || "deluxe rounder pack".equals(tour)) {
+                int count = "all-rounder pack".equals(tour) ? 1 : 3;
+                this.genericRounderTour(count, person, playfulPet);
+            } else {
+                System.out.println("The tour assistant robot for " + playfulPet.getPetName() + " and " + person.getName() + " did nothing.");
+            }
+
+            rentalCosts += playfulPet.getRentalCosts() * this.getCurrentRentTime();
         }
 
-        double rentalCosts = playfulPet.getRentalCosts() * this.getCurrentRentTime();
         this.reset();
         return rentalCosts;
     }
@@ -93,4 +102,12 @@ abstract class PlayfulPetAssistant {
     }
 
     public abstract PlayfulPet createPlayfulPet();
+
+    public PlayfulPet[] createPlayfulPets(int amount) {
+        PlayfulPet[] pets = new PlayfulPet[amount];
+        for (int i = 0; i < amount; i++) {
+            pets[i] = this.createPlayfulPet();
+        }
+        return pets;
+    }
 }
